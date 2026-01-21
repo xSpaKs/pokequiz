@@ -1,5 +1,4 @@
 import { Leaderboard } from "./Leaderboard";
-import { Helmet } from "react-helmet-async";
 
 interface HomeProps {
     onStart: () => void;
@@ -8,16 +7,6 @@ interface HomeProps {
 export const Home = ({ onStart }: HomeProps) => {
     return (
         <>
-            <Helmet>
-                <title>
-                    PokéQuiz - Le Blind Test Pokémon Ultime (Gen 1 à 9)
-                </title>
-                <meta
-                    name="description"
-                    content="Testez vos connaissances sur les 1025 Pokémon ! Un quiz rapide, gratuit et sans inscription. Classement mondial et mode speedrun."
-                />
-                <link rel="canonical" href="https://ton-site.vercel.app/" />
-            </Helmet>
             <div className="min-h-screen flex flex-col items-center py-12 px-4 animate-in fade-in duration-700">
                 {/* Titre et Logo */}
                 <div className="text-center mb-12 space-y-4">
