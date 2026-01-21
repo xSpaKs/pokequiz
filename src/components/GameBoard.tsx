@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { Pokemon } from "../types";
 import { PokeCard } from "./PokeCard";
 import { normalizeInput } from "../utils/text";
-import { Search, Loader2, Trophy, Clock } from "lucide-react";
+import { Search, Loader2, Trophy, Clock, Flag } from "lucide-react";
 import TYPE_TRANSLATIONS from "../data/types";
 import { getTypeSprite, getPixelSprite } from "../utils/sprites";
 import { GameWon } from "./GameWon";
@@ -22,6 +22,7 @@ export const GameBoard = ({ selectedGens, onBack }: GameBoardProps) => {
     const [endTime, setEndTime] = useState<number>(0);
     const [isWon, setIsWon] = useState(false);
     const [currentDuration, setCurrentDuration] = useState(0);
+    const [isGivenUp, setIsGivenUp] = useState(false);
 
     // 1. CHARGEMENT DES DONNÉES
     useEffect(() => {
@@ -145,7 +146,7 @@ export const GameBoard = ({ selectedGens, onBack }: GameBoardProps) => {
 
     // Effet pour mettre à jour le chrono chaque seconde
     useEffect(() => {
-        if (loading || isWon) return; // On arrête si chargement ou victoire
+        if (loading || isWon || isGivenUp) return; // On arrête si chargement ou victoire
 
         const interval = setInterval(() => {
             // On calcule la différence entre maintenant et le début
@@ -153,7 +154,12 @@ export const GameBoard = ({ selectedGens, onBack }: GameBoardProps) => {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [loading, startTime, isWon]);
+    }, [loading, startTime, isWon, isGivenUp]);
+
+    const handleGiveUp = () => {
+        setIsGivenUp(true);
+        setEndTime(Date.now());
+    };
 
     // Fonction pour formater en MM:SS
     const formatTimer = (ms: number) => {
@@ -235,16 +241,30 @@ export const GameBoard = ({ selectedGens, onBack }: GameBoardProps) => {
                 <div className="max-w-3xl mx-auto flex flex-col gap-4">
                     {/* Ligne du haut : Retour - Timer - Score */}
                     <div className="flex justify-between items-center text-white relative">
-                        {/* GAUCHE : Bouton Retour */}
-                        <button
-                            onClick={onBack}
-                            className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer flex items-center gap-1"
-                        >
-                            <span>←</span>{" "}
-                            <span className="hidden sm:inline">
-                                Retourner à l'accueil
-                            </span>
-                        </button>
+                        {/* GAUCHE : Boutons */}
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={onBack}
+                                className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer flex items-center gap-1 bg-slate-900/50 px-3 py-1.5 rounded-lg border border-slate-800 hover:bg-slate-800"
+                            >
+                                <span>←</span>{" "}
+                                <span className="hidden sm:inline">Retour</span>
+                            </button>
+
+                            {/* BOUTON ABANDONNER (Visible seulement si partie en cours) */}
+                            {!isWon && !isGivenUp && (
+                                <button
+                                    onClick={handleGiveUp}
+                                    className="text-sm text-red-400 hover:text-red-300 transition-colors cursor-pointer flex items-center gap-1 bg-red-950/30 px-3 py-1.5 rounded-lg border border-red-900/50 hover:bg-red-900/30 hover:border-red-500/50"
+                                    title="Abandonner et voir les réponses"
+                                >
+                                    <Flag className="w-4 h-4" />
+                                    <span className="hidden sm:inline">
+                                        Abandonner
+                                    </span>
+                                </button>
+                            )}
+                        </div>
 
                         {/* CENTRE : Le Timer (Nouveau) */}
                         <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 font-mono text-xl font-bold text-blue-400 bg-slate-900/50 px-3 py-1 rounded-lg border border-slate-800">
@@ -272,18 +292,25 @@ export const GameBoard = ({ selectedGens, onBack }: GameBoardProps) => {
                         />
                     </div>
 
-                    {/* Zone de Recherche (Inchangée) */}
+                    {/* Zone de Recherche : Désactivée si abandonné */}
                     <div className="relative group">
-                        <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                            <Search className="w-5 h-5 text-slate-500 group-focus-within:text-blue-400 transition-colors" />
-                        </div>
                         <input
                             type="text"
                             value={input}
                             onChange={handleInput}
+                            disabled={isGivenUp} // On bloque l'input
                             autoFocus
-                            placeholder="Entrez le nom d'un Pokémon..."
-                            className="w-full bg-slate-900 border-2 border-slate-700 text-white text-lg rounded-xl py-2 pl-10 pr-4 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-600"
+                            placeholder={
+                                isGivenUp
+                                    ? "Partie terminée"
+                                    : "Entrez le nom d'un Pokémon..."
+                            }
+                            className={`w-full bg-slate-900 border-2 text-white text-lg rounded-xl py-2 pl-10 pr-4 focus:outline-none transition-all placeholder:text-slate-600
+                                ${
+                                    isGivenUp
+                                        ? "border-slate-800 text-slate-500 cursor-not-allowed opacity-50"
+                                        : "border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                }`}
                         />
                     </div>
                 </div>
@@ -324,6 +351,7 @@ export const GameBoard = ({ selectedGens, onBack }: GameBoardProps) => {
                                     <PokeCard
                                         key={poke.pokedexId}
                                         pokemon={poke}
+                                        isRevealed={isGivenUp && !poke.found}
                                     />
                                 ))}
                             </div>

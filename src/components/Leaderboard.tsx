@@ -115,7 +115,7 @@ export const Leaderboard = () => {
                                     )}
                                 </div>
 
-                                <div className="flex flex-col">
+                                <div className="flex flex-col pr-2">
                                     <span
                                         className={`font-semibold truncate max-w-37.5 ${
                                             index === 0
@@ -131,7 +131,7 @@ export const Leaderboard = () => {
                             {/* PARTIE DROITE : Temps + Date */}
                             <div className="flex flex-col items-end gap-1">
                                 {/* La Date (ajoutée ici) */}
-                                <span className="text-[10px] text-slate-500 font-medium uppercase tracking-wide">
+                                <span className="text-[10px] text-slate-500 font-medium uppercase tracking-wide text-right">
                                     {formatDate(score.created_at)}
                                 </span>
                                 {/* Le Chrono */}
