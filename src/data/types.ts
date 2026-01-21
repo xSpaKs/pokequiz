@@ -1,0 +1,22 @@
+const TYPE_TRANSLATIONS: Record<string, string> = {
+    normal: "Normal",
+    fighting: "Combat",
+    flying: "Vol",
+    poison: "Poison",
+    ground: "Sol",
+    rock: "Roche",
+    bug: "Insecte",
+    ghost: "Spectre",
+    steel: "Acier",
+    fire: "Feu",
+    water: "Eau",
+    grass: "Plante",
+    electric: "Électrik",
+    psychic: "Psy",
+    ice: "Glace",
+    dragon: "Dragon",
+    dark: "Ténèbres",
+    fairy: "Fée",
+};
+
+export default TYPE_TRANSLATIONS;
