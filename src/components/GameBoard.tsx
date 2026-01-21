@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Pokemon } from "../types";
+import type { Pokemon } from "../data/pokemon";
 import { PokeCard } from "./PokeCard";
 import { normalizeInput } from "../utils/text";
 import { Loader2, Trophy, Clock, Flag } from "lucide-react";
@@ -113,6 +113,7 @@ export const GameBoard = ({ selectedGens, onBack }: GameBoardProps) => {
                             fr: frName,
                             en: "Unknown",
                         },
+                        normalizedName: normalizeInput(frName),
                         sprites: {
                             regular: getPixelSprite(p.id),
                         },
@@ -177,12 +178,15 @@ export const GameBoard = ({ selectedGens, onBack }: GameBoardProps) => {
         if (cleanGuess.length < 3) return;
 
         const matchIndex = pokemons.findIndex(
-            (p) => !p.found && normalizeInput(p.name.fr) === cleanGuess,
+            (p) => !p.found && p.normalizedName === cleanGuess,
         );
 
         if (matchIndex !== -1) {
             const newList = [...pokemons];
-            newList[matchIndex].found = true;
+            newList[matchIndex] = {
+                ...newList[matchIndex],
+                found: true,
+            };
 
             setPokemons(newList);
             const newScore = score + 1;

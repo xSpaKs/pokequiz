@@ -1,5 +1,3 @@
-// src/types.ts
-
 export interface Pokemon {
     pokedexId: number;
     generation: number;
@@ -8,6 +6,7 @@ export interface Pokemon {
         fr: string;
         en: string;
     };
+    normalizedName: string;
     // On a besoin de l'objet sprites (même si on le modifie nous-même)
     sprites: {
         regular: string;
