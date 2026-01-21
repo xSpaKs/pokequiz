@@ -23,9 +23,6 @@ export const GameBoard = ({ selectedGens, onBack }: GameBoardProps) => {
     const [isWon, setIsWon] = useState(false);
     const [currentDuration, setCurrentDuration] = useState(0);
 
-    // Ref pour scroller automatiquement vers le pokemon trouvé (optionnel mais sympa)
-    const gridRef = useRef<HTMLDivElement>(null);
-
     // 1. CHARGEMENT DES DONNÉES
     useEffect(() => {
         const fetchData = async () => {
