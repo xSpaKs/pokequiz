@@ -14,7 +14,7 @@ export const saveScore = async (
 
 export const getTopScores = async (gen: number) => {
     const { data, error } = await supabase
-        .from("scores")
+        .from("pokequiz-scores")
         .select("*")
         .eq("generation", gen) // On filtre par génération
         .order("time_ms", { ascending: true }) // Le plus petit temps en premier
