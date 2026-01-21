@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { Pokemon } from "../types";
 import { PokeCard } from "./PokeCard";
 import { normalizeInput } from "../utils/text";
-import { Search, Loader2, Trophy, Clock, Flag } from "lucide-react";
+import { Loader2, Trophy, Clock, Flag } from "lucide-react";
 import TYPE_TRANSLATIONS from "../data/types";
 import { getTypeSprite, getPixelSprite } from "../utils/sprites";
 import { GameWon } from "./GameWon";
