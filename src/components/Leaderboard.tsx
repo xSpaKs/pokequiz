@@ -74,7 +74,7 @@ export const Leaderboard = () => {
             </div>
 
             {/* --- LISTE DES SCORES --- */}
-            <div className="space-y-2 min-h-50">
+            <div className="space-y-2">
                 {loading ? (
                     <div className="text-center text-slate-500 py-10 flex flex-col items-center gap-2">
                         <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
