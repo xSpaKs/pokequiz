@@ -1,4 +1,5 @@
 import { Leaderboard } from "./Leaderboard";
+import { GamesLinks } from "./GamesLinks";
 
 interface HomeProps {
     onStart: () => void;
@@ -7,6 +8,7 @@ interface HomeProps {
 export const Home = ({ onStart }: HomeProps) => {
     return (
         <>
+            <GamesLinks />
             <div className="min-h-screen flex flex-col items-center py-12 px-4 animate-in fade-in duration-700">
                 {/* Titre et Logo */}
                 <div className="text-center mb-12 space-y-4">
