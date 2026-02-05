@@ -6,7 +6,7 @@ export const saveScore = async (
     gen: number,
 ) => {
     const { error } = await supabase
-        .from("scores")
+        .from("pokequiz-scores")
         .insert([{ username: username, time_ms: timeMs, generation: gen }]);
 
     if (error) console.error("Erreur save:", error);
